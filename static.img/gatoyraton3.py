@@ -23,7 +23,6 @@ tablero[raton_pos] = 2  # 2 representa al Ratón
 # Para evitar movimientos repetidos
 # Aquí se guardan los movientos para evitar en lo posible que sean repetidos 
 movimientos_previos = set() 
-
 def generar_destino(raton_pos, min_distancia):
     while True:
         destino = (random.randint(0, TABLERO_TAMANIO - 1), random.randint(0, TABLERO_TAMANIO - 1))
@@ -171,7 +170,7 @@ def jugar():
     pygame.display.set_caption("Juego del Gato y el Ratón")
     reloj = pygame.time.Clock()
 
-    imagen_gato = pygame.image.load('static.img/ENCONTRADO 9.jpg')
+    imagen_gato = pygame.image.load('static.ihttps://github.com/pablomedina7/GATO-Y-RATON.gitmg/ENCONTRADO 9.jpg')
     imagen_raton = pygame.image.load('static.img/raton.webp')
     imagen_destino = pygame.image.load('static.img/PUERTA.jpeg')
     imagen_gato = pygame.transform.scale(imagen_gato, (TAMANIO_CELDA, TAMANIO_CELDA))
