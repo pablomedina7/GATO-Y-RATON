@@ -14,7 +14,7 @@ COLOR_LINEA = ( 255,255, 255)
 tablero = np.zeros((TABLERO_TAMANIO, TABLERO_TAMANIO))
 # Se utiliza numpy para crear una matriz de ceros 
 gato_pos = (0, 0)
-raton_pos = (4, 4)
+raton_pos = (8, 8)
 # Esta matriz se usa para almacenar las posiciones.
 # Posiciones iniciales de los jugadores, en este caso el gato y el ratón. 
 tablero[gato_pos] = 1  # 1 representa al Gato
@@ -22,9 +22,9 @@ tablero[raton_pos] = 2  # 2 representa al Ratón
 
 # Para evitar movimientos repetidos
 # Aquí se guardan los movientos para evitar en lo posible que sean repetidos 
-movimientos_previos = set() 
+movimientos_previos = set() #un set cumple la función (no duplicar) 
 def generar_destino(raton_pos, min_distancia):
-    while True:
+    while True: #before happn
         destino = (random.randint(0, TABLERO_TAMANIO - 1), random.randint(0, TABLERO_TAMANIO - 1))
         distancia = np.sum(np.abs(np.array(destino) - np.array(raton_pos)))
         # La heurística del A* usa numpy para calcular la distancia de Manhattan entre dos puntos, 
@@ -64,14 +64,14 @@ def minimax(tablero, profundidad, maximizando, movimientos_previos):
         return evaluar(tablero)
     
     if maximizando:
-        mejor_valor = -np.inf
+        mejor_valor = -np.inf #
         movimientos = generar_movimientos(tablero, 1, movimientos_previos)
         for movimiento in movimientos:
             valor = minimax(movimiento, profundidad - 1, False, movimientos_previos)
             mejor_valor = max(mejor_valor, valor)
         return mejor_valor
     else:
-        mejor_valor = np.inf #INFERIOR buscar xq min en min 
+        mejor_valor = np.inf 
         movimientos = generar_movimientos(tablero, 2, movimientos_previos)
         for movimiento in movimientos:
             valor = minimax(movimiento, profundidad - 1, True, movimientos_previos)
@@ -103,22 +103,22 @@ def generar_movimientos(tablero, jugador, movimientos_previos):
 # Algoritmo A* para el Ratón
 
 def a_star(tablero, inicio, destino):
-    def heuristic(a, b):
-        return np.sum(np.abs(np.array(a) - np.array(b)))
-
+    def heuristic(a, b): #valores r de coor
+        return np.sum(np.abs(np.array(a) - np.array(b))) #contiene las diferencias de i b
+                    #v.a one to one 
     posibles_movimientos = [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)]
     
     cola = []
     heapq.heappush(cola, (0 + heuristic(inicio, destino), 0, inicio, None))
-    visitados = set()
-    came_from = {}
-    
+    visitados = set()   #se usa set para crear un conjunto empty 
+    came_from = {}  #se crea un diccionario empty, se guarda where came the node and rebuilding 
+    #bucle when has elements 
     while cola:
-        _, costo, actual, anterior = heapq.heappop(cola)
+        _, costo, actual, anterior = heapq.heappop(cola)    #less priority-out 
         
         if actual in visitados:
             continue
-        
+        #save the visited and replace 
         visitados.add(actual)
         came_from[actual] = anterior
         
@@ -133,7 +133,7 @@ def a_star(tablero, inicio, destino):
     
     # Reconstruir el camino
     camino = []
-    actual = destino
+    actual = destino #where want to go 
     while actual:
         camino.append(actual)
         actual = came_from[actual]
@@ -170,7 +170,7 @@ def jugar():
     pygame.display.set_caption("Juego del Gato y el Ratón")
     reloj = pygame.time.Clock()
 
-    imagen_gato = pygame.image.load('static.ihttps://github.com/pablomedina7/GATO-Y-RATON.gitmg/ENCONTRADO 9.jpg')
+    imagen_gato = pygame.image.load('static.img/ENCONTRADO 9.jpg')
     imagen_raton = pygame.image.load('static.img/raton.webp')
     imagen_destino = pygame.image.load('static.img/PUERTA.jpeg')
     imagen_gato = pygame.transform.scale(imagen_gato, (TAMANIO_CELDA, TAMANIO_CELDA))
@@ -178,7 +178,7 @@ def jugar():
     imagen_destino = pygame.transform.scale(imagen_destino, (TAMANIO_CELDA, TAMANIO_CELDA))
     pygame.mixer.music.load('AC-DC - Back In Black (Official 4K Video).mp3')
     pygame.mixer.music.play(-1)  # -1 hace que la música se reproduzca en bucle
-
+#control principal del juego
     corriendo = True
     while corriendo and not juego_terminado(tablero):
         for evento in pygame.event.get():
@@ -187,7 +187,7 @@ def jugar():
     corriendo = True
     while corriendo and not juego_terminado(tablero):
 
-        for evento in pygame.event.get():
+        for evento in pygame.event.get(): #review events 
             if evento.type == pygame.QUIT:
                 corriendo = False
         pantalla.fill(COLOR_FONDO)
